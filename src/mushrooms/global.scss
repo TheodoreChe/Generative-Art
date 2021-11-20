@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
+
+body, html {
+  height: 100%;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  background-color: #000;
+  letter-spacing: 0.01em;
+}
+
+* {
+  border-color: transparent;
+  box-shadow: none;
+  outline-style: none;
+}
