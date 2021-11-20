@@ -1,10 +1,19 @@
-const baseConfig = require('./webpack.common.js');
-const { merge } = require('webpack-merge');
+const { merge } = require('webpack-merge')
+const baseConfig = require('./webpack.common.js')
+const paths = require('./paths')
 
 module.exports = merge(baseConfig, {
-    mode: 'production',
-    target: 'browserslist',
-    output: {
-        filename: '[name].[contenthash].js',
-    },
-});
+  mode: 'production',
+
+  devtool: false,
+
+  output: {
+    path: paths.build,
+    publicPath: '/',
+    filename: 'js/[name].[contenthash].bundle.js',
+  },
+
+  optimization: {
+    minimize: true,
+  },
+})
