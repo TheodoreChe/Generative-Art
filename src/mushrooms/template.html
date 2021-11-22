@@ -14,20 +14,29 @@
       <h1 class="header__title">&nbsp;mshrm mshrm mshrm mshrm mshrm mshrm mshrm mshrm mshrm mshrm</h1>
     </header>
     <main class="wrapper">
-      <div class="content">
-        <section class="section">
-          <div class="field">
-            <div class="input">
-              <label for="hash">
-                <input type="text" id="hash" placeholder="Hash" autocomplete="off" />
-              </label>
+      <section class="section mushroom__section">
+        <div class="section__content">
+          <div class="section__left">
+            <canvas class="canvas" width="300" height="300"></canvas>
+          </div>
+          <div class="section__right">
+            <div class="info">
+              <div>
+                Hi, 👋
+                <br>
+                My name is <span id="name"></span>,
+                I’m living in <span id="city"></span>
+                <br>
+                and I’m <span id="occupation"></span>
+                <br>
+                <button class="button" id="copyBtn">Copy My Link</button>
+                <button class="button" id="getNewBtn">Get New MSHRM</button>
+              </div>
+              <div class="hash" id="hash"></div>
             </div>
           </div>
-        </section>
-        <section class="section mushroom__section">
-          <canvas class="canvas" width="300" height="300"></canvas>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
   </body>
 </html>

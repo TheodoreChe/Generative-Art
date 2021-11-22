@@ -1,5 +1,17 @@
 import Zdog from 'zdog'
 
+type TokenData = {
+    hash: string
+}
+
 declare global {
-  var Zdog: typeof Zdog
+    const Zdog: typeof Zdog
+
+    const tokenData: TokenData
+
+    interface Window {
+        mshrm:any;
+        tokenData: TokenData
+    }
+
 }

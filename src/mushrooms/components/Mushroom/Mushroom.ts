@@ -1,26 +1,65 @@
+import { cities, names, occupations } from './data'
 import './Mushroom.scss'
 
-export function createMushroom({ element }: { element: string }) {
+const sfc32 = (hash: string) => {
+  let a = parseInt(hash.substr(0, 8), 16);
+  let b = parseInt(hash.substr(8, 8), 16);
+  let c = parseInt(hash.substr(16, 8), 16);
+  let d = parseInt(hash.substr(24, 8), 16);
+  return function () {
+    a |= 0; b |= 0; c |= 0; d |= 0;
+    let t = (((a + b) | 0) + d) | 0;
+    d = (d + 1) | 0;
+    a = b ^ (b >>> 9);
+    b = (c + (c << 3)) | 0;
+    c = (c << 21) | (c >>> 11);
+    c = (c + t) | 0;
+    return (t >>> 0) / 4294967296;
+  };
+};
+
+export function createMushroom({ element }: { element: string | HTMLCanvasElement | SVGSVGElement }) {
+  // TOKEN DATA
+  const hash = tokenData?.hash
+  if (!hash) return
+
+  const randomDec = sfc32(hash)
+
+  const randomBool = (p: number) => randomDec() < p
+  const randomMultiplier = () => randomBool(0.5) ? 1 : -1
+
+  //META
+  const meta = {
+    name: names[Math.floor(randomDec()*names.length)],
+    city: cities[Math.floor(randomDec()*cities.length)],
+    occupation: occupations[Math.floor(randomDec()*occupations.length)],
+  }
+
+  // COLORS
+  const colorsList = new Array(11).fill('').map((x, i) => `#${hash.substr(i * 6, 6)}`)
+  const colorsMap = {
+    LINE: '#07010c',
+    HEAD: colorsList[1],
+    BODY: colorsList[2],
+    HAND: colorsList[2],
+    LEG: colorsList[3],
+    BG: colorsList[4],
+    SHADOW: 'hsl(0deg 0% 0% / 10%)',
+  }
+
   let illo = new Zdog.Illustration({
     element,
     dragRotate: false,
   })
 
-  const getRHEX = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
-  const getRMultiplier = () => (Math.random() < 0.5 ? 1 : -1)
-
   // SHAPES
-  const LINE_COLOR = '#07010c'
-
   const HEAD_LENGTH = 90
-  const HEAD_COLOR = getRHEX()
 
   const BODY_LENGTH = 60
   const BODY_STROKE = 40
   const BODY_DIAMETER = 30
   const BODY_FULL_LENGTH = BODY_LENGTH + BODY_STROKE
   const BODY_HALF_LENGTH = BODY_FULL_LENGTH / 2
-  const BODY_COLOR = getRHEX()
 
   const FACE_Z = 12
   const EYE_Z = FACE_Z + 3
@@ -30,25 +69,21 @@ export function createMushroom({ element }: { element: string }) {
   const HAND_LENGTH = 16
   const HAND_Z = -10
   const HAND_DISTANSE = BODY_DIAMETER + HAND_STROKE / 2
-  const HAND_COLOR = BODY_COLOR
 
   const LEG_STROKE = 10
   const LEG_START = -BODY_HALF_LENGTH
   const LEG_END = LEG_START - 20
   const LEG_DISTANSE = 10
-  const LEG_COLOR = getRHEX()
 
-  const SMILE = getRMultiplier()
-  const R_HAND = getRMultiplier()
-  const L_HAND = getRMultiplier()
-
-  const BG_BG = getRHEX()
+  const SMILE = randomMultiplier()
+  const R_HAND = randomMultiplier()
+  const L_HAND = randomMultiplier()
 
   let bg = new Zdog.Ellipse({
     addTo: illo,
     diameter: 280,
     translate: { z: -100 },
-    color: BG_BG,
+    color: colorsMap.BG,
     fill: true,
   })
 
@@ -57,7 +92,7 @@ export function createMushroom({ element }: { element: string }) {
     diameter: 80,
     rotate: { x: Zdog.TAU * 0.3 },
     translate: { y: 112 },
-    color: 'hsl(0deg 0% 0% / 10%)',
+    color: colorsMap.SHADOW,
     fill: true,
   })
 
@@ -68,7 +103,7 @@ export function createMushroom({ element }: { element: string }) {
     diameter: 140,
     length: HEAD_LENGTH,
     stroke: 40,
-    color: HEAD_COLOR,
+    color: colorsMap.HEAD,
     fill: true,
   })
 
@@ -78,9 +113,8 @@ export function createMushroom({ element }: { element: string }) {
     diameter: BODY_DIAMETER,
     length: BODY_LENGTH,
     stroke: BODY_STROKE,
-    color: BODY_COLOR,
-    backface: LEG_COLOR,
-
+    color: colorsMap.BODY,
+    backface: colorsMap.LEG,
     fill: true,
   })
 
@@ -88,8 +122,9 @@ export function createMushroom({ element }: { element: string }) {
     addTo: body,
     translate: { x: -16, y: 24, z: EYE_Z },
     stroke: 10,
-    color: LINE_COLOR,
+    color: colorsMap.LINE,
   })
+
   eye.copy({
     translate: { x: 16, y: 24, z: EYE_Z },
   })
@@ -97,121 +132,119 @@ export function createMushroom({ element }: { element: string }) {
   let smile = new Zdog.Ellipse({
     addTo: body,
     diameter: 10,
-    quarters: 2, // semi-circle
+    quarters: 2,
     translate: { x: 0, y: 30, z: SMILE_Z },
-    // rotate semi-circle to point up
     rotate: { x: Zdog.TAU / 4, z: (Zdog.TAU / 4) * SMILE },
-    color: LINE_COLOR,
+    color: colorsMap.LINE,
     stroke: 3,
   })
 
   const hand = new Zdog.Shape({
     addTo: body,
     path: [
-      { x: 0, z: 0 }, // start
+      { x: 0, z: 0 },
       {
         arc: [
-          { x: -(HAND_LENGTH / 2), z: 0 }, // corner
-          { x: -(HAND_LENGTH / 2), z: HAND_LENGTH * L_HAND }, // end point
+          { x: -(HAND_LENGTH / 2), z: 0 },
+          { x: -(HAND_LENGTH / 2), z: HAND_LENGTH * L_HAND },
         ],
       },
     ],
     translate: { x: -HAND_DISTANSE, z: HAND_Z },
     stroke: HAND_STROKE,
     closed: false,
-    color: HAND_COLOR,
+    color: colorsMap.HAND,
   })
+
   hand.copy({
     path: [
-      { x: 0, z: 0 }, // start
+      { x: 0, z: 0 },
       {
         arc: [
-          { x: HAND_LENGTH / 2, z: 0 }, // corner
-          { x: HAND_LENGTH / 2, z: HAND_LENGTH * R_HAND }, // end point
+          { x: HAND_LENGTH / 2, z: 0 },
+          { x: HAND_LENGTH / 2, z: HAND_LENGTH * R_HAND },
         ],
       },
     ],
     translate: { x: HAND_DISTANSE, z: HAND_Z },
   })
 
-  let rleg = new Zdog.Shape({
+  let rightLeg = new Zdog.Shape({
     addTo: body,
     path: [{ z: LEG_START }, { z: LEG_END }],
     translate: { x: -LEG_DISTANSE },
     stroke: LEG_STROKE,
-    color: LEG_COLOR,
+    color: colorsMap.LEG,
   })
-  let lleg = rleg.copy({
+
+  let leftLeg = rightLeg.copy({
     translate: { x: LEG_DISTANSE },
   })
 
-  let rL = false
-  let rR = false
-  let rD = 0.3
-  let rM = 1
+  // ANIMATION CONFIG
+  type AnimationConfig = {
+    MULTIPLIER: -1 | 1,
+    DELTA: number,
+  }
+  
+  const headRotation: AnimationConfig = {
+    MULTIPLIER: 1,
+    DELTA: 0.3,
+  }
+  
+  const headTranslate: AnimationConfig = {
+    MULTIPLIER: 1,
+    DELTA: 0.6,
+  }
+  
+  const legTranslate: AnimationConfig = {
+    MULTIPLIER: 1,
+    DELTA: 2.4,
+  }
 
-  let hT = false
-  let hB = false
-  let hD = 0.6
-  let hM = 1
+  const SPEED = 0.08
+  
+  const getAnimationMultiplier = (multiplier: 1 | -1, parameter: number, delta: number): 1 | -1 => {
+    if (multiplier === 1 && parameter > delta) {
+      return -1
+    }
 
-  let lT = false
-  let lB = false
-  let lD = 2.4
-  let lM = 1
-
-  let speed = 0.08
+    if (multiplier === -1 && parameter < -delta) {
+      return 1
+    }
+    
+    return multiplier
+  }
 
   // RENDER
   function animate() {
-    // ROATATION
-    head.rotate.z += (rM * speed) / 8
-    if (!rL && head.rotate.z > rD) {
-      rL = true
-      rR = false
-      rM = -1
-    }
+    // HEAD ROTATION
+    head.rotate.z += (headRotation.MULTIPLIER * SPEED) / 8
 
-    if (!rR && head.rotate.z < -rD) {
-      rR = true
-      rL = false
-      rM = 1
-    }
+    headRotation.MULTIPLIER = getAnimationMultiplier(
+        headRotation.MULTIPLIER, head.rotate.z, headRotation.DELTA
+    )
 
-    // STEPS HEAD
-    head.translate.y += (hM * speed) / 4
+    // HEAD TRANSLATE
+    head.translate.y += (headTranslate.MULTIPLIER * SPEED) / 4
 
-    if (!hT && head.translate.y > hD) {
-      hT = true
-      hB = false
-      hM = -1
-    }
+    headTranslate.MULTIPLIER = getAnimationMultiplier(
+        headTranslate.MULTIPLIER, head.translate.y, headTranslate.DELTA
+    )
 
-    if (!hB && head.translate.y < -hD) {
-      hB = true
-      hT = false
-      hM = 1
-    }
+    // LEGS TRANSLATE
+    rightLeg.translate.z += legTranslate.MULTIPLIER * SPEED
+    leftLeg.translate.z = -rightLeg.translate.z
 
-    // STEPS LEGS
-    rleg.translate.z += lM * speed
-    lleg.translate.z = -rleg.translate.z
-
-    if (!lT && rleg.translate.z > lD) {
-      lT = true
-      lB = false
-      lM = -1
-    }
-
-    if (!lB && rleg.translate.z < -lD) {
-      lB = true
-      lT = false
-      lM = 1
-    }
+    legTranslate.MULTIPLIER = getAnimationMultiplier(
+        legTranslate.MULTIPLIER, rightLeg.translate.z, legTranslate.DELTA
+    )
 
     illo.updateRenderGraph()
     requestAnimationFrame(animate)
   }
 
   animate()
+
+  return meta;
 }

@@ -49,26 +49,57 @@ h3,
 }
 
 .section {
-  max-width: 640px;
-  padding: 2rem 0;
-  margin: 0 auto;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+
+  &__content {
+    max-width: 1000px;
+    padding: 1rem;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  &__left {
+    padding: 1rem;
+    border-right: 1px solid #fff;
+  }
+
+  &__right {
+    padding: 1rem;
+  }
 }
 
-.input {
-  background-color: #43ff6f;
-  border-radius: 1rem;
-  height: 3rem;
-  overflow: hidden;
-  input {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0.5rem 1rem;
-    border: 0;
-    box-sizing: border-box;
-    font-size: .9rem;
-    color: #303030;
-    letter-spacing: 1px;
-    background: transparent;
+.info {
+  font-family: monospace;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hash {
+  font-size: .8rem;
+}
+
+.button{
+  position: relative;
+  font-size: 1.2rem;
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  &:hover{
+    background: blue
+  }
+  &:active{
+    top:1px;
   }
 }

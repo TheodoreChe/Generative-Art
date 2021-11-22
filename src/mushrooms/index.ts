@@ -1,11 +1,12 @@
-import { initLayout } from './components/Layout'
+import { initLayout, updateLayout } from './components/Layout'
 import { createMushroom } from './components/Mushroom'
 
 import './global.scss'
 
 function App() {
   initLayout()
-  createMushroom({ element: '.canvas' })
+  const meta = createMushroom({ element: '.canvas' })
+  updateLayout(meta)
 }
 
 // Run the App
