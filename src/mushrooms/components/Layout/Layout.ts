@@ -20,20 +20,28 @@ const copyHashToBuffer = (hash: string) => () => {
   navigator.clipboard.writeText(`${window.location.href}/?hash=${hash}`)
 }
 
+const downloadButtonHandler = () => {
+  const canvas: HTMLCanvasElement | null = document.querySelector('.canvas')
+  const link = document.createElement('a');
+  link.download = `${window.mshrm.name || 'file'}.png`;
+  link.href = canvas?.toDataURL() || ''
+  link.click();
+}
+
 const shareButtonHandler = (hash: string) => () => {
   const url = `${window.location.origin}${window.location.pathname}?hash=${hash}`
   if (navigator.share) {
     navigator.share({
-      title: `MSHRM ${window.mshrm}`,
+      title: `MSHRM ${window.mshrm.name}`,
       url,
     })
   } else {
-    if (!window || !window.location || !navigator) return
+    if (!navigator) return
     navigator.clipboard.writeText(url)
   }
 }
 
-const getNewMshrm = () => {
+const refreshButtonHandler = () => {
   window.location.href = window.location.pathname
 }
 
@@ -49,7 +57,8 @@ export function initLayout() {
 
   //Listen
   document.getElementById('shareButton')?.addEventListener('click', shareButtonHandler(hash))
-  document.getElementById('getNewBtn')?.addEventListener('click', getNewMshrm)
+  document.getElementById('downloadButton')?.addEventListener('click', downloadButtonHandler)
+  document.getElementById('refreshButton')?.addEventListener('click', refreshButtonHandler)
 
   // Elements
   setInnerText('#hash', hash)
