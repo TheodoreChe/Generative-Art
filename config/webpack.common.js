@@ -7,7 +7,7 @@ const config = [{ site: 'mushrooms' }]
 
 const entryHtmlPlugins = config.map(({ site }) => {
   return new HtmlWebPackPlugin({
-    filename: `${site}.html`,
+    filename: `${site}/index.html`,
     template: path.join(paths.src, site, 'template.html'),
     favicon: path.join(paths.src, site, 'favicon.png'),
     chunks: [site],
@@ -29,7 +29,7 @@ module.exports = {
 
   output: {
     path: paths.build,
-    filename: '[name].bundle.js',
+    filename: '[name]/bundle.js',
     publicPath: '/',
   },
 

@@ -11,7 +11,7 @@ module.exports = merge(baseConfig, {
   output: {
     path: paths.build,
     publicPath: '/',
-    filename: 'js/[name].[contenthash].bundle.js',
+    filename: '[name]/bundle.js',
   },
 
   module: {
@@ -36,7 +36,7 @@ module.exports = merge(baseConfig, {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',
+      filename: '[name]/styles.css',
       chunkFilename: '[id].css',
     }),
   ],
