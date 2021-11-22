@@ -20,34 +20,48 @@ const copyHashToBuffer = (hash: string) => () => {
   navigator.clipboard.writeText(`${window.location.href}/?hash=${hash}`)
 }
 
+const shareButtonHandler = (hash: string) => () => {
+  const url = `${window.location.origin}${window.location.pathname}?hash=${hash}`
+  if (navigator.share) {
+    navigator.share({
+      title: `MSHRM ${window.mshrm}`,
+      url,
+    })
+  } else {
+    if (!window || !window.location || !navigator) return
+    navigator.clipboard.writeText(url)
+  }
+}
+
 const getNewMshrm = () => {
   window.location.href = window.location.pathname
 }
 
 export function initLayout() {
   if (!document) return
-  const urlParams = new URLSearchParams(window.location.search);
-  const hashFromURL = urlParams.get('hash');
+  const urlParams = new URLSearchParams(window.location.search)
+  const hashFromURL = urlParams.get('hash')
 
   const hash = hashFromURL || getNewHash()
   window.tokenData = {
-    hash
+    hash,
   }
 
   //Listen
-  document.getElementById("copyBtn")?.addEventListener("click", copyHashToBuffer(hash));
-  document.getElementById("getNewBtn")?.addEventListener("click", getNewMshrm);
+  document.getElementById('shareButton')?.addEventListener('click', shareButtonHandler(hash))
+  document.getElementById('getNewBtn')?.addEventListener('click', getNewMshrm)
 
   // Elements
   setInnerText('#hash', hash)
+  if (!navigator.share) {
+    setInnerText('#shareAction', 'Copy')
+  }
 }
 
-export function updateLayout(meta?: {
-  name: string,
-  city: string,
-  occupation: string,
-}) {
+export function updateLayout(meta?: { name: string; city: string; occupation: string }) {
+  window.mshrm = meta
   setInnerText('#name', meta?.name || '')
+  setInnerText('#shareName', `${meta?.name}'s`)
   setInnerText('#city', meta?.city || '')
   setInnerText('#occupation', meta?.occupation || '')
 }

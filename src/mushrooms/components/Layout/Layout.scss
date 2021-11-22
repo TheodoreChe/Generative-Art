@@ -1,9 +1,12 @@
+$tablet: 1000px;
+
 .wrapper {
   position: relative;
   min-height: 176px;
   min-width: 320px;
   padding-bottom: 144px;
   padding-top: 8px;
+  overflow: hidden;
 }
 
 h1,
@@ -57,15 +60,28 @@ h3,
     padding: 1rem;
     margin: 0 auto;
     display: flex;
+    @media (max-width: $tablet) {
+      flex-direction: column;
+      padding: 0;
+    }
   }
 
   &__left {
     padding: 1rem;
     border-right: 1px solid #fff;
+    @media (max-width: $tablet) {
+      border-right: none;
+      display:flex;
+      justify-content: center;
+    }
   }
 
   &__right {
     padding: 1rem;
+    @media (max-width: $tablet) {
+      padding: 2rem;
+      border-top: 1px solid #fff;
+    }
   }
 }
 
