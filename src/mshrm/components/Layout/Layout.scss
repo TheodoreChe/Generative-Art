@@ -55,6 +55,10 @@ h3,
   border-top: 1px solid #fff;
   border-bottom: 1px solid #fff;
 
+  &+.section {
+    border-top: none;
+  }
+
   &__content {
     max-width: 1000px;
     padding: 1rem;
