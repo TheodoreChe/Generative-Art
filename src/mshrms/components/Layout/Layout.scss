@@ -48,14 +48,14 @@ h3,
 
 .intro__title {
   text-align: center;
-  color: #ef3844
+  color: #ef3844;
 }
 
 .section {
   border-top: 1px solid #fff;
   border-bottom: 1px solid #fff;
 
-  &+.section {
+  & + .section {
     border-top: none;
   }
 
@@ -75,7 +75,7 @@ h3,
     border-right: 1px solid #fff;
     @media (max-width: $tablet) {
       border-right: none;
-      display:flex;
+      display: flex;
       justify-content: center;
     }
   }
@@ -101,10 +101,10 @@ h3,
 }
 
 .hash {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
-.button{
+.button {
   position: relative;
   font-size: 1.2rem;
   background: #000;
@@ -116,10 +116,10 @@ h3,
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   cursor: pointer;
-  &:hover{
-    background: blue
+  &:hover {
+    background: blue;
   }
-  &:active{
-    top:1px;
+  &:active {
+    top: 1px;
   }
 }

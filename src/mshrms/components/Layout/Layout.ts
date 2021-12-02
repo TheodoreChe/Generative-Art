@@ -57,7 +57,7 @@ export function initLayout() {
 
   //Listen
   document.getElementById('shareButton')?.addEventListener('click', shareButtonHandler(hash))
-  document.getElementById('downloadButton')?.addEventListener('click', downloadButtonHandler)
+  document.getElementById('downloadImageButton')?.addEventListener('click', downloadButtonHandler)
   document.getElementById('refreshButton')?.addEventListener('click', refreshButtonHandler)
 
   // Elements

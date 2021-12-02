@@ -139,7 +139,7 @@ export function createMushroom({ element }: { element: string | HTMLCanvasElemen
     stroke: 3,
   })
 
-  const hand = new Zdog.Shape({
+  const leftHand = new Zdog.Shape({
     addTo: body,
     path: [
       { x: 0, z: 0 },
@@ -156,7 +156,7 @@ export function createMushroom({ element }: { element: string | HTMLCanvasElemen
     color: colorsMap.HAND,
   })
 
-  hand.copy({
+  const rightHand = leftHand.copy({
     path: [
       { x: 0, z: 0 },
       {
