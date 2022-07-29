@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const paths = require('./paths')
 
-const config = [{ site: 'mshrms' }]
+const config = [{ site: 'mshrms' }, { site: 'etomisha' }]
 
 const entryHtmlPlugins = config.map(({ site }) => {
   return new HtmlWebPackPlugin({
